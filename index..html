@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="DIMAJU Fashion Studio — Moda contemporánea colombiana">
+<meta name="robots" content="noindex, nofollow">
+<title>DIMAJU — Fashion Studio</title>
+
+<!-- Anti-copy & security meta -->
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="no-referrer">
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@100;200;300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════
+   ROOT & RESET
+══════════════════════════════════════ */
+:root {
+  --black:      #0A0A0A;
+  --dark:       #111111;
+  --gray:       #1C1C1C;
+  --gray-mid:   #3A3A3A;
+  --gray-text:  #888888;
+  --white:      #F5F2EE;
+  --off-white:  #E8E4DE;
+  --gold:       #C9A84C;
+  --gold-light: #E8CB7A;
+  --gold-dark:  #8B6914;
+  --gold-dim:   rgba(201,168,76,0.15);
+  --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* Custom cursor */
+* { cursor: none !important; }
+.cursor {
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease;
+  transform: translate(-50%, -50%);
+}
+.cursor-ring {
+  width: 32px; height: 32px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 99998;
+  transition: transform 0.08s linear, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+  transform: translate(-50%, -50%);
+  opacity: 0.5;
+}
+.cursor.hover { width: 16px; height: 16px; }
+.cursor-ring.hover { width: 48px; height: 48px; opacity: 0.3; }
+
+/* Grain overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--gold-dark); }
+
+/* Selection */
+::selection { background: var(--gold); color: var(--black); }
+
+/* ══════════════════════════════════════
+   LOADER
+══════════════════════════════════════ */
+#loader {
+  position: fixed; inset: 0;
+  background: var(--black);
+  z-index: 100000;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 32px;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+#loader.hide { opacity: 0; visibility: hidden; }
+.loader-logo {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 200;
+  font-size: 48px;
+  letter-spacing: 20px;
+  color: var(--white);
+  animation: fadeIn 1s ease forwards;
+}
+.loader-bar {
+  width: 200px; height: 1px;
+  background: var(--gray-mid);
+  position: relative; overflow: hidden;
+}
+.loader-bar::after {
+  content: '';
+  position: absolute; left: -100%; top: 0;
+  width: 100%; height: 100%;
+  background: var(--gold);
+  animation: loadBar 1.8s ease forwards;
+}
+@keyframes loadBar { to { left: 0; } }
+@keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+/* ══════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 60px;
+  transition: background 0.4s ease, padding 0.4s ease;
+}
+nav.scrolled {
+  background: rgba(10,10,10,0.96);
+  backdrop-filter: blur(12px);
+  padding: 16px 60px;
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+.nav-logo {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 200;
+  font-size: 22px;
+  letter-spacing: 10px;
+  color: var(--white);
+  text-decoration: none;
+  position: relative;
+}
+.nav-logo::after {
+  content: '';
+  position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 1px;
+  background: var(--gold);
+  transition: width var(--transition);
+}
+.nav-logo:hover::after { width: 100%; }
+
+.nav-links { display: flex; gap: 40px; align-items: center; }
+.nav-links a {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gray-text);
+  text-decoration: none;
+  transition: color var(--transition);
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 1px;
+  background: var(--gold);
+  transition: width var(--transition);
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { width: 100%; }
+
+.nav-cta {
+  font-size: 8px !important;
+  font-weight: 500 !important;
+  letter-spacing: 4px !important;
+  color: var(--gold) !important;
+  border: 1px solid rgba(201,168,76,0.3) !important;
+  padding: 8px 20px !important;
+  transition: all var(--transition) !important;
+}
+.nav-cta:hover { 
+  background: var(--gold) !important;
+  color: var(--black) !important;
+  border-color: var(--gold) !important;
+}
+.nav-cta::after { display: none !important; }
+
+.hamburger {
+  display: none;
+  flex-direction: column; gap: 6px;
+  background: none; border: none;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 24px; height: 1px;
+  background: var(--white);
+  transition: all 0.3s ease;
+}
+
+/* ══════════════════════════════════════
+   HERO
+══════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+  padding: 120px 60px 80px;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 50%, rgba(201,168,76,0.04) 0%, transparent 60%),
+    linear-gradient(135deg, #0A0A0A 0%, #111 50%, #0A0A0A 100%);
+}
+/* Geometric lines in background */
+.hero-lines {
+  position: absolute; inset: 0;
+  overflow: hidden; pointer-events: none;
+}
+.hero-lines svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 760px;
+}
+.hero-label {
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 32px;
+  display: flex; align-items: center; gap: 16px;
+  opacity: 0;
+  animation: slideUp 0.8s ease 2s forwards;
+}
+.hero-label::before {
+  content: '';
+  width: 40px; height: 1px;
+  background: var(--gold);
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(52px, 8vw, 96px);
+  line-height: 0.9;
+  letter-spacing: -1px;
+  color: var(--white);
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: slideUp 0.8s ease 2.2s forwards;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--gold);
+  display: block;
+}
+.hero-subtitle {
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 3px;
+  color: var(--gray-text);
+  max-width: 400px;
+  line-height: 2;
+  margin-bottom: 56px;
+  opacity: 0;
+  animation: slideUp 0.8s ease 2.4s forwards;
+}
+.hero-actions {
+  display: flex; gap: 20px; align-items: center;
+  opacity: 0;
+  animation: slideUp 0.8s ease 2.6s forwards;
+}
+.btn-primary {
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--gold);
+  padding: 16px 40px;
+  text-decoration: none;
+  transition: all var(--transition);
+  position: relative; overflow: hidden;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--gold-light);
+  transform: translateX(-100%);
+  transition: transform var(--transition);
+}
+.btn-primary:hover::before { transform: translateX(0); }
+.btn-primary span { position: relative; z-index: 1; }
+.btn-ghost {
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gray-text);
+  text-decoration: none;
+  display: flex; align-items: center; gap: 12px;
+  transition: color var(--transition);
+}
+.btn-ghost::after {
+  content: '→';
+  transition: transform var(--transition);
+}
+.btn-ghost:hover { color: var(--white); }
+.btn-ghost:hover::after { transform: translateX(6px); }
+
+/* Hero right decoration */
+.hero-deco {
+  position: absolute;
+  right: 60px; top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  animation: fadeIn 1.2s ease 2.8s forwards;
+}
+
+@keyframes slideUp {
+  from { opacity:0; transform: translateY(24px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════════
+   MARQUEE
+══════════════════════════════════════ */
+.marquee-strip {
+  border-top: 1px solid rgba(201,168,76,0.2);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  background: rgba(201,168,76,0.04);
+  padding: 16px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.marquee-inner {
+  display: inline-flex; gap: 60px;
+  animation: marquee 20s linear infinite;
+}
+.marquee-item {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex; align-items: center; gap: 60px;
+}
+.marquee-item::after {
+  content: '◆';
+  font-size: 6px;
+}
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* ══════════════════════════════════════
+   SECTIONS COMMON
+══════════════════════════════════════ */
+section { padding: 120px 60px; }
+.section-header { margin-bottom: 80px; }
+.section-number {
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: 5px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1;
+  color: var(--white);
+}
+.section-title em { font-style: italic; color: var(--gold); }
+.divider {
+  width: 60px; height: 1px;
+  background: var(--gold);
+  margin: 24px 0;
+}
+
+/* ══════════════════════════════════════
+   ABOUT / COLECCIÓN GRID
+══════════════════════════════════════ */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.about-text p {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--gray-text);
+  line-height: 2;
+  margin-bottom: 24px;
+}
+.about-text p strong { color: var(--white); font-weight: 400; }
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 48px;
+}
+.stat-item { border-left: 1px solid rgba(201,168,76,0.3); padding-left: 20px; }
+.stat-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gray-text);
+  margin-top: 4px;
+}
+.about-visual {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ══════════════════════════════════════
+   COLLECTION GRID
+══════════════════════════════════════ */
+#coleccion { background: var(--dark); }
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.product-card {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  background: var(--gray);
+  display: flex; align-items: flex-end;
+}
+.product-visual {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 100px;
+  color: rgba(201,168,76,0.08);
+  font-weight: 300;
+  letter-spacing: -5px;
+  transition: transform 0.6s ease, color 0.6s ease;
+}
+.product-card:hover .product-visual {
+  transform: scale(1.05);
+  color: rgba(201,168,76,0.12);
+}
+.product-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+.product-card:hover .product-overlay { opacity: 1; }
+.product-info {
+  position: relative; z-index: 2;
+  padding: 28px;
+  width: 100%;
+  transform: translateY(8px);
+  opacity: 0;
+  transition: all var(--transition);
+}
+.product-card:hover .product-info {
+  transform: translateY(0);
+  opacity: 1;
+}
+.product-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+.product-cat {
+  font-size: 8px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+.product-price {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--gold);
+  margin-top: 8px;
+}
+.product-badge {
+  position: absolute;
+  top: 20px; right: 20px;
+  font-size: 7px;
+  letter-spacing: 3px;
+  color: var(--black);
+  background: var(--gold);
+  padding: 4px 10px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ══════════════════════════════════════
+   FEATURED / EDITORIAL
+══════════════════════════════════════ */
+.editorial-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 600px;
+}
+.editorial-visual {
+  background: var(--gray);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.editorial-visual svg { opacity: 0.6; }
+.editorial-content {
+  padding: 80px 60px;
+  background: var(--gold);
+  display: flex; flex-direction: column;
+  justify-content: center;
+}
+.editorial-content .section-number { color: rgba(10,10,10,0.5); }
+.editorial-content .section-title { color: var(--black); }
+.editorial-content .section-title em { color: rgba(10,10,10,0.6); font-style: italic; }
+.editorial-content .divider { background: rgba(10,10,10,0.3); }
+.editorial-text {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(10,10,10,0.7);
+  line-height: 2;
+  margin-bottom: 40px;
+}
+.btn-dark {
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--white);
+  background: var(--black);
+  padding: 16px 40px;
+  text-decoration: none;
+  display: inline-block;
+  transition: all var(--transition);
+  align-self: flex-start;
+}
+.btn-dark:hover { background: var(--gray); }
+
+/* ══════════════════════════════════════
+   CONTACT
+══════════════════════════════════════ */
+#contacto { background: var(--dark); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+}
+.contact-info { display: flex; flex-direction: column; gap: 40px; }
+.contact-item {}
+.contact-label {
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.contact-value {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--gray-text);
+}
+
+.contact-form { display: flex; flex-direction: column; gap: 20px; }
+.form-group { display: flex; flex-direction: column; gap: 8px; }
+.form-label {
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gray-text);
+}
+.form-input, .form-textarea {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 0;
+  color: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  padding: 14px 18px;
+  outline: none;
+  transition: border-color var(--transition);
+  width: 100%;
+}
+.form-input:focus, .form-textarea:focus {
+  border-color: rgba(201,168,76,0.5);
+}
+.form-textarea { resize: vertical; min-height: 120px; }
+.form-submit {
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--gold);
+  border: none;
+  padding: 16px 40px;
+  align-self: flex-start;
+  transition: all var(--transition);
+  position: relative; overflow: hidden;
+}
+.form-submit:hover { background: var(--gold-light); }
+
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
+footer {
+  border-top: 1px solid rgba(201,168,76,0.15);
+  padding: 60px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 40px;
+}
+.footer-logo {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 200;
+  font-size: 28px;
+  letter-spacing: 10px;
+  color: var(--white);
+}
+.footer-logo span {
+  display: block;
+  font-size: 7px;
+  letter-spacing: 6px;
+  color: var(--gold);
+  margin-top: 4px;
+}
+.footer-links {
+  display: flex; gap: 32px;
+}
+.footer-links a {
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gray-text);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+.footer-links a:hover { color: var(--gold); }
+.footer-copy {
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: #333;
+  text-align: right;
+}
+
+/* ══════════════════════════════════════
+   ADMIN PANEL
+══════════════════════════════════════ */
+.admin-trigger {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  z-index: 9000;
+  background: rgba(10,10,10,0.8);
+  border: 1px solid rgba(201,168,76,0.2);
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(8px);
+  transition: all var(--transition);
+  opacity: 0.3;
+}
+.admin-trigger:hover { opacity: 1; border-color: var(--gold); }
+.admin-trigger svg { width: 18px; height: 18px; fill: var(--gold); }
+
+/* Login modal */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(10,10,10,0.95);
+  z-index: 9100;
+  display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(8px);
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--dark);
+  border: 1px solid rgba(201,168,76,0.2);
+  width: 100%; max-width: 440px;
+  padding: 56px;
+  position: relative;
+  animation: fadeIn 0.3s ease;
+}
+.modal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.modal-sub {
+  font-size: 8px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 40px;
+}
+.modal-close {
+  position: absolute; top: 20px; right: 20px;
+  background: none; border: none;
+  color: var(--gray-text); font-size: 18px;
+  line-height: 1;
+}
+.modal-close:hover { color: var(--white); }
+.modal-error {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #e05050;
+  display: none;
+  margin-top: 12px;
+}
+.modal-error.show { display: block; }
+.lockout-msg {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #e05050;
+  text-align: center;
+  padding: 16px;
+  border: 1px solid rgba(224,80,80,0.2);
+  display: none;
+}
+.lockout-msg.show { display: block; }
+
+/* Admin Panel */
+.admin-panel {
+  position: fixed; inset: 0;
+  z-index: 9200;
+  background: var(--black);
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.admin-panel.open { display: flex; }
+.admin-topbar {
+  background: var(--dark);
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+  padding: 20px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 10;
+}
+.admin-brand {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 200;
+  font-size: 16px;
+  letter-spacing: 8px;
+  color: var(--white);
+}
+.admin-brand small {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  margin-top: 2px;
+}
+.admin-actions { display: flex; gap: 12px; }
+.admin-btn {
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 10px 24px;
+  border: none;
+  transition: all var(--transition);
+}
+.admin-btn.save { background: var(--gold); color: var(--black); }
+.admin-btn.save:hover { background: var(--gold-light); }
+.admin-btn.logout { background: transparent; color: var(--gray-text); border: 1px solid rgba(255,255,255,0.1); }
+.admin-btn.logout:hover { color: var(--white); border-color: rgba(255,255,255,0.3); }
+
+.admin-body {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  flex: 1;
+}
+.admin-sidebar {
+  background: var(--dark);
+  border-right: 1px solid rgba(201,168,76,0.08);
+  padding: 32px 0;
+}
+.sidebar-section {
+  font-size: 7px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #333;
+  padding: 8px 24px 16px;
+  margin-top: 16px;
+}
+.sidebar-item {
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: var(--gray-text);
+  padding: 12px 24px;
+  display: flex; align-items: center; gap: 10px;
+  transition: all var(--transition);
+  border-left: 2px solid transparent;
+}
+.sidebar-item.active,
+.sidebar-item:hover {
+  color: var(--white);
+  background: rgba(201,168,76,0.04);
+  border-left-color: var(--gold);
+}
+.sidebar-item svg { width: 14px; height: 14px; fill: currentColor; opacity: 0.6; }
+
+.admin-content { padding: 48px; overflow-y: auto; }
+.admin-tab { display: none; }
+.admin-tab.active { display: block; }
+
+.admin-section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.admin-section-sub {
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 40px;
+}
+
+.admin-field-group {
+  display: flex; flex-direction: column; gap: 8px;
+  margin-bottom: 28px;
+}
+.admin-label {
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gray-text);
+}
+.admin-input, .admin-textarea {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--white);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  padding: 12px 16px;
+  outline: none;
+  width: 100%;
+  transition: border-color var(--transition);
+}
+.admin-input:focus, .admin-textarea:focus { border-color: rgba(201,168,76,0.4); }
+.admin-textarea { resize: vertical; min-height: 100px; }
+
+.admin-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.admin-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+.product-editor-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 24px;
+  margin-bottom: 16px;
+  position: relative;
+}
+.product-editor-card .card-num {
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.delete-card {
+  position: absolute; top: 16px; right: 16px;
+  background: none; border: none;
+  color: #555; font-size: 16px;
+}
+.delete-card:hover { color: #e05050; }
+
+.add-product-btn {
+  width: 100%;
+  padding: 16px;
+  background: none;
+  border: 1px dashed rgba(201,168,76,0.2);
+  color: var(--gold);
+  font-size: 8px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  transition: all var(--transition);
+  margin-top: 8px;
+}
+.add-product-btn:hover {
+  border-style: solid;
+  background: rgba(201,168,76,0.04);
+}
+
+.save-toast {
+  position: fixed;
+  bottom: 80px; right: 24px;
+  background: var(--gold);
+  color: var(--black);
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 12px 24px;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 9999;
+  pointer-events: none;
+}
+.save-toast.show { transform: translateY(0); opacity: 1; }
+
+.admin-toggle-row {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.toggle-label {
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--white);
+}
+.toggle-desc {
+  font-size: 9px;
+  color: var(--gray-text);
+  margin-top: 2px;
+}
+.toggle-switch {
+  width: 44px; height: 24px;
+  background: var(--gray-mid);
+  border-radius: 12px;
+  position: relative;
+  flex-shrink: 0;
+  transition: background 0.3s ease;
+}
+.toggle-switch.on { background: var(--gold); }
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  width: 18px; height: 18px;
+  background: var(--white);
+  border-radius: 50%;
+  top: 3px; left: 3px;
+  transition: transform 0.3s ease;
+}
+.toggle-switch.on::after { transform: translateX(20px); }
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 900px) {
+  nav { padding: 20px 24px; }
+  nav.scrolled { padding: 14px 24px; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .hero { padding: 100px 24px 60px; }
+  .hero-deco { display: none; }
+  section { padding: 80px 24px; }
+  .about-grid, .contact-grid { grid-template-columns: 1fr; }
+  .collection-grid { grid-template-columns: 1fr 1fr; }
+  .editorial-block { grid-template-columns: 1fr; }
+  footer { grid-template-columns: 1fr; text-align: center; }
+  .footer-copy { text-align: center; }
+  .footer-links { justify-content: center; }
+  .admin-body { grid-template-columns: 1fr; }
+  .admin-sidebar { display: none; }
+  .admin-content { padding: 24px; }
+  .admin-grid-2, .admin-grid-3 { grid-template-columns: 1fr; }
+  .modal-box { margin: 24px; padding: 40px 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">DIMAJU</div>
+  <div class="loader-bar"></div>
+</div>
+
+<!-- SAVE TOAST -->
+<div class="save-toast" id="saveToast">Cambios guardados</div>
+
+<!-- ══════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════ -->
+<nav id="navbar">
+  <a href="#inicio" class="nav-logo" id="navLogo">DIMAJU</a>
+  <div class="nav-links" id="navLinks">
+    <a href="#nosotros" id="navNosotros">Nosotros</a>
+    <a href="#coleccion" id="navColeccion">Colección</a>
+    <a href="#editorial" id="navEditorial">Editorial</a>
+    <a href="#contacto" id="navContacto">Contacto</a>
+    <a href="#contacto" class="nav-cta" id="navCta">Reservar</a>
+  </div>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<section class="hero" id="inicio">
+  <div class="hero-bg"></div>
+  <div class="hero-lines">
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      <line x1="0" y1="200" x2="1440" y2="200" stroke="rgba(201,168,76,0.04)" stroke-width="1"/>
+      <line x1="0" y1="600" x2="1440" y2="600" stroke="rgba(201,168,76,0.04)" stroke-width="1"/>
+      <line x1="900" y1="0" x2="900" y2="900" stroke="rgba(201,168,76,0.04)" stroke-width="1"/>
+      <line x1="1200" y1="0" x2="600" y2="900" stroke="rgba(201,168,76,0.03)" stroke-width="1"/>
+      <circle cx="1100" cy="450" r="280" fill="none" stroke="rgba(201,168,76,0.03)" stroke-width="1"/>
+      <circle cx="1100" cy="450" r="180" fill="none" stroke="rgba(201,168,76,0.04)" stroke-width="0.5"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-label" id="heroLabel">Nueva Colección 2025</div>
+    <h1 class="hero-title" id="heroTitle">
+      Moda que<br>
+      <em id="heroTitleItalic">define quién eres</em>
+    </h1>
+    <p class="hero-subtitle" id="heroSubtitle">
+      Prendas diseñadas con precisión, confeccionadas con materiales seleccionados y creadas para quienes definen su propio estilo.
+    </p>
+    <div class="hero-actions">
+      <a href="#coleccion" class="btn-primary"><span id="heroCta1">Ver Colección</span></a>
+      <a href="#nosotros" class="btn-ghost" id="heroCta2">Conocer la marca</a>
+    </div>
+  </div>
+
+  <!-- D monogram decoration -->
+  <div class="hero-deco">
+    <svg viewBox="0 0 320 400" width="260" xmlns="http://www.w3.org/2000/svg">
+      <path d="M40 40 L40 360 L130 360 C218 360 280 310 280 200 C280 90 218 40 130 40 Z"
+            fill="none" stroke="rgba(201,168,76,0.15)" stroke-width="1"/>
+      <path d="M80 80 L80 320 L126 320 C196 320 240 270 240 200 C240 130 196 80 126 80 Z"
+            fill="none" stroke="rgba(201,168,76,0.08)" stroke-width="1"/>
+      <line x1="80" y1="80" x2="80" y2="320" stroke="rgba(201,168,76,0.15)" stroke-width="1"/>
+      <circle cx="200" cy="200" r="2" fill="rgba(201,168,76,0.4)"/>
+      <circle cx="160" cy="80" r="1.5" fill="rgba(201,168,76,0.3)"/>
+      <circle cx="160" cy="320" r="1.5" fill="rgba(201,168,76,0.3)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     MARQUEE
+══════════════════════════════════════ -->
+<div class="marquee-strip">
+  <div class="marquee-inner" id="marqueeInner">
+    <span class="marquee-item">Moda Colombiana</span>
+    <span class="marquee-item">Fashion Studio</span>
+    <span class="marquee-item">Nueva Colección</span>
+    <span class="marquee-item">Diseño Exclusivo</span>
+    <span class="marquee-item">Hecho en Colombia</span>
+    <span class="marquee-item">DIMAJU 2025</span>
+    <span class="marquee-item">Moda Colombiana</span>
+    <span class="marquee-item">Fashion Studio</span>
+    <span class="marquee-item">Nueva Colección</span>
+    <span class="marquee-item">Diseño Exclusivo</span>
+    <span class="marquee-item">Hecho en Colombia</span>
+    <span class="marquee-item">DIMAJU 2025</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     NOSOTROS
+══════════════════════════════════════ -->
+<section id="nosotros">
+  <div class="about-grid">
+    <div>
+      <div class="section-header">
+        <div class="section-number">01 — Nosotros</div>
+        <h2 class="section-title" id="aboutTitle">Una marca<br><em>con identidad</em></h2>
+        <div class="divider"></div>
+      </div>
+      <div class="about-text">
+        <p id="aboutP1"><strong>DIMAJU</strong> nació de la convicción de que la moda colombiana merece un lugar propio en el escenario global. Cada pieza que creamos es el resultado de un proceso riguroso de diseño, selección de materiales y confección artesanal.</p>
+        <p id="aboutP2">Nuestro estudio trabaja con un enfoque editorial: cada colección cuenta una historia, cada prenda es un capítulo. Creamos moda para personas que entienden que vestirse bien es una forma de comunicación.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-item">
+          <div class="stat-number" id="stat1N">100%</div>
+          <div class="stat-label" id="stat1L">Diseño propio</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="stat2N">2025</div>
+          <div class="stat-label" id="stat2L">Fundada</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="stat3N">Col.</div>
+          <div class="stat-label" id="stat3L">Hecho en Colombia</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" id="stat4N">∞</div>
+          <div class="stat-label" id="stat4L">Estilo propio</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual">
+      <svg viewBox="0 0 400 480" width="340" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="20" width="360" height="440" fill="none" stroke="rgba(201,168,76,0.12)" stroke-width="1"/>
+        <rect x="36" y="36" width="328" height="408" fill="rgba(201,168,76,0.02)"/>
+        <!-- Large D -->
+        <path d="M80 100 L80 380 L160 380 C248 380 300 330 300 240 C300 150 248 100 160 100 Z"
+              fill="none" stroke="rgba(201,168,76,0.3)" stroke-width="1.5"/>
+        <path d="M112 132 L112 348 L158 348 C228 348 268 304 268 240 C268 176 228 132 158 132 Z"
+              fill="rgba(201,168,76,0.04)"/>
+        <line x1="112" y1="132" x2="112" y2="348" stroke="rgba(201,168,76,0.3)" stroke-width="1.5"/>
+        <!-- Corner accents -->
+        <line x1="20" y1="40" x2="20" y2="20" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
+        <line x1="20" y1="20" x2="40" y2="20" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
+        <line x1="360" y1="20" x2="380" y2="20" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
+        <line x1="380" y1="20" x2="380" y2="40" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
+        <line x1="20" y1="460" x2="20" y2="440" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
+        <line x1="20" y1="460" x2="40" y2="460" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
+        <line x1="360" y1="460" x2="380" y2="460" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
+        <line x1="380" y1="440" x2="380" y2="460" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
+        <!-- Text -->
+        <text x="200" y="430" font-family="'Montserrat',sans-serif" font-size="8" font-weight="300" letter-spacing="6" fill="rgba(201,168,76,0.5)" text-anchor="middle">FASHION STUDIO · COLOMBIA</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     COLECCIÓN
+══════════════════════════════════════ -->
+<section id="coleccion">
+  <div class="section-header" style="text-align:center;">
+    <div class="section-number">02 — Colección</div>
+    <h2 class="section-title" id="colTitle">Piezas <em>esenciales</em></h2>
+    <div class="divider" style="margin:24px auto;"></div>
+    <p style="font-size:11px; color:var(--gray-text); letter-spacing:2px;" id="colSubtitle">Selección exclusiva · Temporada 2025</p>
+  </div>
+
+  <div class="collection-grid" id="collectionGrid">
+    <!-- Products rendered by JS -->
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     EDITORIAL
+══════════════════════════════════════ -->
+<div class="editorial-block" id="editorial">
+  <div class="editorial-visual">
+    <svg viewBox="0 0 500 600" width="340" xmlns="http://www.w3.org/2000/svg">
+      <rect x="40" y="40" width="420" height="520" fill="none" stroke="rgba(201,168,76,0.15)" stroke-width="1"/>
+      <path d="M100 120 L100 480 L190 480 C286 480 340 424 340 300 C340 176 286 120 190 120 Z"
+            fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="2"/>
+      <path d="M134 154 L134 446 L188 446 C264 446 306 386 306 300 C306 214 264 154 188 154 Z"
+            fill="rgba(201,168,76,0.06)"/>
+      <line x1="134" y1="154" x2="134" y2="446" stroke="rgba(201,168,76,0.4)" stroke-width="2"/>
+      <text x="250" y="540" font-family="'Montserrat',sans-serif" font-size="9" font-weight="200" letter-spacing="8" fill="rgba(201,168,76,0.3)" text-anchor="middle">DIMAJU</text>
+    </svg>
+  </div>
+  <div class="editorial-content">
+    <div class="section-number" id="editLabel">03 — Editorial</div>
+    <h2 class="section-title" id="editTitle">La moda como<br><em>declaración</em></h2>
+    <div class="divider"></div>
+    <p class="editorial-text" id="editText">
+      En DIMAJU creemos que cada prenda es una declaración silenciosa. Nuestro proceso creativo parte de la observación del entorno colombiano — sus colores, texturas, ritmos — y los transforma en piezas que hablan por sí solas.
+    </p>
+    <a href="#coleccion" class="btn-dark" id="editCta">Explorar colección</a>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CONTACTO
+══════════════════════════════════════ -->
+<section id="contacto">
+  <div class="contact-grid">
+    <div>
+      <div class="section-header">
+        <div class="section-number">04 — Contacto</div>
+        <h2 class="section-title" id="contactTitle">Hablemos de <em>tu estilo</em></h2>
+        <div class="divider"></div>
+      </div>
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-label">Email</div>
+          <div class="contact-value" id="contactEmail">hola@dimaju.com</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">Instagram</div>
+          <div class="contact-value" id="contactIG">@dimaju.studio</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">Ubicación</div>
+          <div class="contact-value" id="contactCity">Colombia</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">Horario</div>
+          <div class="contact-value" id="contactHours">Lun–Vie · 9am–6pm</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <form class="contact-form" onsubmit="handleContactForm(event)">
+        <div class="form-group">
+          <label class="form-label">Nombre</label>
+          <input class="form-input" type="text" placeholder="Tu nombre" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" placeholder="tu@email.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mensaje</label>
+          <textarea class="form-textarea" placeholder="¿En qué podemos ayudarte?"></textarea>
+        </div>
+        <button type="submit" class="form-submit">Enviar mensaje</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer>
+  <div class="footer-logo">
+    DIMAJU
+    <span id="footerTagline">Fashion Studio</span>
+  </div>
+  <div class="footer-links">
+    <a href="#nosotros">Nosotros</a>
+    <a href="#coleccion">Colección</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+  <div class="footer-copy" id="footerCopy">© 2025 DIMAJU. Todos los derechos reservados.</div>
+</footer>
+
+<!-- ══════════════════════════════════════
+     ADMIN TRIGGER
+══════════════════════════════════════ -->
+<button class="admin-trigger" id="adminTrigger" onclick="openLogin()" title="Panel de administración" aria-label="Admin">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+  </svg>
+</button>
+
+<!-- ══════════════════════════════════════
+     LOGIN MODAL
+══════════════════════════════════════ -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeLogin()">✕</button>
+    <div class="modal-title">Acceso</div>
+    <div class="modal-sub">Panel de administración · DIMAJU</div>
+    <div class="lockout-msg" id="lockoutMsg">
+      Demasiados intentos. Espera <span id="lockoutTimer">30</span> segundos.
+    </div>
+    <div class="admin-field-group">
+      <div class="admin-label">Contraseña</div>
+      <input class="admin-input" type="password" id="loginInput" 
+             placeholder="••••••••" autocomplete="off"
+             onkeydown="if(event.key==='Enter') attemptLogin()">
+    </div>
+    <button class="admin-btn save" onclick="attemptLogin()" style="width:100%; padding:14px;">
+      Ingresar
+    </button>
+    <div class="modal-error" id="loginError">Contraseña incorrecta</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     ADMIN PANEL
+══════════════════════════════════════ -->
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-topbar">
+    <div class="admin-brand">
+      DIMAJU
+      <small>Panel de Administración</small>
+    </div>
+    <div class="admin-actions">
+      <button class="admin-btn save" onclick="saveAllChanges()">Guardar cambios</button>
+      <button class="admin-btn logout" onclick="adminLogout()">Cerrar sesión</button>
+    </div>
+  </div>
+  <div class="admin-body">
+    <div class="admin-sidebar">
+      <div class="sidebar-section">Contenido</div>
+      <div class="sidebar-item active" onclick="showTab('tab-hero', this)">
+        <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+        Hero / Inicio
+      </div>
+      <div class="sidebar-item" onclick="showTab('tab-about', this)">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        Nosotros
+      </div>
+      <div class="sidebar-item" onclick="showTab('tab-collection', this)">
+        <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+        Colección
+      </div>
+      <div class="sidebar-item" onclick="showTab('tab-editorial', this)">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6z"/></svg>
+        Editorial
+      </div>
+      <div class="sidebar-item" onclick="showTab('tab-contact', this)">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        Contacto
+      </div>
+      <div class="sidebar-section">Ajustes</div>
+      <div class="sidebar-item" onclick="showTab('tab-settings', this)">
+        <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+        Configuración
+      </div>
+      <div class="sidebar-item" onclick="showTab('tab-password', this)">
+        <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+        Contraseña
+      </div>
+    </div>
+
+    <div class="admin-content">
+
+      <!-- TAB: HERO -->
+      <div class="admin-tab active" id="tab-hero">
+        <div class="admin-section-title">Hero / Inicio</div>
+        <div class="admin-section-sub">Sección principal de la página</div>
+        <div class="admin-field-group">
+          <div class="admin-label">Etiqueta superior</div>
+          <input class="admin-input" id="e-heroLabel" placeholder="Nueva Colección 2025">
+        </div>
+        <div class="admin-grid-2">
+          <div class="admin-field-group">
+            <div class="admin-label">Título línea 1</div>
+            <input class="admin-input" id="e-heroLine1" placeholder="Moda que">
+          </div>
+          <div class="admin-field-group">
+            <div class="admin-label">Título línea 2 (itálica, dorada)</div>
+            <input class="admin-input" id="e-heroLine2" placeholder="define quién eres">
+          </div>
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Subtítulo</div>
+          <textarea class="admin-textarea" id="e-heroSubtitle" rows="3"></textarea>
+        </div>
+        <div class="admin-grid-2">
+          <div class="admin-field-group">
+            <div class="admin-label">Botón principal</div>
+            <input class="admin-input" id="e-heroCta1" placeholder="Ver Colección">
+          </div>
+          <div class="admin-field-group">
+            <div class="admin-label">Botón secundario</div>
+            <input class="admin-input" id="e-heroCta2" placeholder="Conocer la marca">
+          </div>
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Texto del Marquee (separar con ·)</div>
+          <input class="admin-input" id="e-marquee" placeholder="Moda Colombiana · Fashion Studio · ...">
+        </div>
+      </div>
+
+      <!-- TAB: ABOUT -->
+      <div class="admin-tab" id="tab-about">
+        <div class="admin-section-title">Nosotros</div>
+        <div class="admin-section-sub">Sección de historia de la marca</div>
+        <div class="admin-field-group">
+          <div class="admin-label">Título</div>
+          <input class="admin-input" id="e-aboutTitle1" placeholder="Una marca">
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Título (itálica)</div>
+          <input class="admin-input" id="e-aboutTitle2" placeholder="con identidad">
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Párrafo 1</div>
+          <textarea class="admin-textarea" id="e-aboutP1"></textarea>
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Párrafo 2</div>
+          <textarea class="admin-textarea" id="e-aboutP2"></textarea>
+        </div>
+        <div class="admin-section-sub" style="margin-top:32px;">Estadísticas</div>
+        <div class="admin-grid-2">
+          <div class="admin-field-group">
+            <div class="admin-label">Estadística 1 — Número</div>
+            <input class="admin-input" id="e-stat1N" placeholder="100%">
+          </div>
+          <div class="admin-field-group">
+            <div class="admin-label">Estadística 1 — Etiqueta</div>
+            <input class="admin-input" id="e-stat1L" placeholder="Diseño propio">
+          </div>
+          <div class="admin-field-group">
+            <div class="admin-label">Estadística 2 — Número</div>
+            <input class="admin-input" id="e-stat2N" placeholder="2025">
+          </div>
+          <div class="admin-field-group">
+            <div class="admin-label">Estadística 2 — Etiqueta</div>
+            <input class="admin-input" id="e-stat2L" placeholder="Fundada">
+          </div>
+          <div class="admin-field-group">
+            <div class="admin-label">Estadística 3 — Número</div>
+            <input class="admin-input" id="e-stat3N">
+          </div>
+          <div class="admin-field-group">
+            <div class="admin-label">Estadística 3 — Etiqueta</div>
+            <input class="admin-input" id="e-stat3L">
+          </div>
+          <div class="admin-field-group">
+            <div class="admin-label">Estadística 4 — Número</div>
+            <input class="admin-input" id="e-stat4N">
+          </div>
+          <div class="admin-field-group">
+            <div class="admin-label">Estadística 4 — Etiqueta</div>
+            <input class="admin-input" id="e-stat4L">
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: COLLECTION -->
+      <div class="admin-tab" id="tab-collection">
+        <div class="admin-section-title">Colección</div>
+        <div class="admin-section-sub">Gestiona los productos</div>
+        <div class="admin-grid-2">
+          <div class="admin-field-group">
+            <div class="admin-label">Título sección</div>
+            <input class="admin-input" id="e-colTitle" placeholder="Piezas">
+          </div>
+          <div class="admin-field-group">
+            <div class="admin-label">Título (itálica)</div>
+            <input class="admin-input" id="e-colItalic" placeholder="esenciales">
+          </div>
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Subtítulo</div>
+          <input class="admin-input" id="e-colSub">
+        </div>
+        <div class="admin-section-sub" style="margin-top:32px;">Productos</div>
+        <div id="productsEditor"></div>
+        <button class="add-product-btn" onclick="addProduct()">+ Agregar producto</button>
+      </div>
+
+      <!-- TAB: EDITORIAL -->
+      <div class="admin-tab" id="tab-editorial">
+        <div class="admin-section-title">Editorial</div>
+        <div class="admin-section-sub">Bloque editorial central</div>
+        <div class="admin-field-group">
+          <div class="admin-label">Etiqueta</div>
+          <input class="admin-input" id="e-editLabel" placeholder="03 — Editorial">
+        </div>
+        <div class="admin-grid-2">
+          <div class="admin-field-group">
+            <div class="admin-label">Título línea 1</div>
+            <input class="admin-input" id="e-editTitle1" placeholder="La moda como">
+          </div>
+          <div class="admin-field-group">
+            <div class="admin-label">Título (itálica)</div>
+            <input class="admin-input" id="e-editTitle2" placeholder="declaración">
+          </div>
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Texto</div>
+          <textarea class="admin-textarea" id="e-editText" rows="5"></textarea>
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Botón</div>
+          <input class="admin-input" id="e-editCta" placeholder="Explorar colección">
+        </div>
+      </div>
+
+      <!-- TAB: CONTACT -->
+      <div class="admin-tab" id="tab-contact">
+        <div class="admin-section-title">Contacto</div>
+        <div class="admin-section-sub">Información de contacto</div>
+        <div class="admin-grid-2">
+          <div class="admin-field-group">
+            <div class="admin-label">Título</div>
+            <input class="admin-input" id="e-contactTitle1" placeholder="Hablemos de">
+          </div>
+          <div class="admin-field-group">
+            <div class="admin-label">Título (itálica)</div>
+            <input class="admin-input" id="e-contactTitle2" placeholder="tu estilo">
+          </div>
+        </div>
+        <div class="admin-grid-2">
+          <div class="admin-field-group">
+            <div class="admin-label">Email</div>
+            <input class="admin-input" id="e-contactEmail" type="email">
+          </div>
+          <div class="admin-field-group">
+            <div class="admin-label">Instagram</div>
+            <input class="admin-input" id="e-contactIG" placeholder="@dimaju.studio">
+          </div>
+          <div class="admin-field-group">
+            <div class="admin-label">Ciudad / País</div>
+            <input class="admin-input" id="e-contactCity">
+          </div>
+          <div class="admin-field-group">
+            <div class="admin-label">Horario</div>
+            <input class="admin-input" id="e-contactHours">
+          </div>
+        </div>
+        <div class="admin-field-group" style="margin-top:16px;">
+          <div class="admin-label">Tagline footer</div>
+          <input class="admin-input" id="e-footerTagline" placeholder="Fashion Studio">
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Copyright footer</div>
+          <input class="admin-input" id="e-footerCopy">
+        </div>
+      </div>
+
+      <!-- TAB: SETTINGS -->
+      <div class="admin-tab" id="tab-settings">
+        <div class="admin-section-title">Configuración</div>
+        <div class="admin-section-sub">Opciones generales del sitio</div>
+        <div class="admin-toggle-row">
+          <div>
+            <div class="toggle-label">Anti-copia activado</div>
+            <div class="toggle-desc">Desactiva clic derecho e inspección de código</div>
+          </div>
+          <div class="toggle-switch on" id="toggle-anticopy" onclick="toggleSwitch(this)"></div>
+        </div>
+        <div class="admin-toggle-row">
+          <div>
+            <div class="toggle-label">Cursor personalizado</div>
+            <div class="toggle-desc">Cursor dorado de marca</div>
+          </div>
+          <div class="toggle-switch on" id="toggle-cursor" onclick="toggleSwitch(this)"></div>
+        </div>
+        <div class="admin-toggle-row">
+          <div>
+            <div class="toggle-label">Animación de carga</div>
+            <div class="toggle-desc">Pantalla de bienvenida al entrar</div>
+          </div>
+          <div class="toggle-switch on" id="toggle-loader" onclick="toggleSwitch(this)"></div>
+        </div>
+        <div class="admin-toggle-row">
+          <div>
+            <div class="toggle-label">Efecto grain</div>
+            <div class="toggle-desc">Textura de granulado en el fondo</div>
+          </div>
+          <div class="toggle-switch on" id="toggle-grain" onclick="toggleSwitch(this)"></div>
+        </div>
+      </div>
+
+      <!-- TAB: PASSWORD -->
+      <div class="admin-tab" id="tab-password">
+        <div class="admin-section-title">Cambiar Contraseña</div>
+        <div class="admin-section-sub">Seguridad del panel de administración</div>
+        <div style="background:rgba(201,168,76,0.06); border:1px solid rgba(201,168,76,0.15); padding:20px; margin-bottom:32px;">
+          <p style="font-size:11px; color:var(--gray-text); line-height:1.8;">
+            Elige una contraseña segura. La contraseña se guarda de forma encriptada en tu navegador. 
+            Recomendamos combinar letras, números y símbolos.
+          </p>
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Contraseña actual</div>
+          <input class="admin-input" type="password" id="pwCurrent" autocomplete="off">
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Nueva contraseña</div>
+          <input class="admin-input" type="password" id="pwNew" autocomplete="new-password">
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Confirmar nueva contraseña</div>
+          <input class="admin-input" type="password" id="pwConfirm" autocomplete="new-password">
+        </div>
+        <div id="pwError" style="font-size:10px; color:#e05050; display:none; margin-bottom:16px;"></div>
+        <button class="admin-btn save" onclick="changePassword()">Actualizar contraseña</button>
+      </div>
+
+    </div><!-- /admin-content -->
+  </div><!-- /admin-body -->
+</div><!-- /admin-panel -->
+
+<!-- ══════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════ -->
+<script>
+// ─────────────────────────────────────
+// SECURITY
+// ─────────────────────────────────────
+(function() {
+  // Disable right click
+  document.addEventListener('contextmenu', function(e) {
+    if (!isAdminOpen()) e.preventDefault();
+  });
+  // Disable F12, Ctrl+Shift+I/J/U
+  document.addEventListener('keydown', function(e) {
+    if (isAdminOpen()) return;
+    if (e.key === 'F12') { e.preventDefault(); return; }
+    if (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) { e.preventDefault(); return; }
+    if (e.ctrlKey && e.key === 'u') { e.preventDefault(); return; }
+    if (e.ctrlKey && e.key === 's') { e.preventDefault(); return; }
+  });
+  // Detect devtools (basic)
+  let devOpen = false;
+  const threshold = 160;
+  setInterval(function() {
+    if (!isAdminOpen() && (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold)) {
+      if (!devOpen) {
+        devOpen = true;
+        document.body.style.display = 'none';
+        setTimeout(() => { document.body.style.display = ''; devOpen = false; }, 3000);
+      }
+    }
+  }, 1000);
+  // Disable drag of images
+  document.addEventListener('dragstart', e => e.preventDefault());
+  // Disable text selection outside admin
+  document.addEventListener('selectstart', function(e) {
+    if (!isAdminOpen() && !e.target.closest('input, textarea')) e.preventDefault();
+  });
+})();
+
+function isAdminOpen() {
+  return document.getElementById('adminPanel').classList.contains('open');
+}
+
+// ─────────────────────────────────────
+// HASH (simple SHA-256 via Web Crypto)
+// ─────────────────────────────────────
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(password + 'DIMAJU_SALT_2025');
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Default password hash (password: Dimaju2025!)
+// Pre-computed hash stored on first run
+const DEFAULT_HASH = 'dimaju_default_not_hashed'; 
+
+async function getStoredHash() {
+  let h = localStorage.getItem('dmj_auth_hash');
+  if (!h) {
+    // Set default password on first run
+    h = await hashPassword('Dimaju2025!');
+    localStorage.setItem('dmj_auth_hash', h);
+  }
+  return h;
+}
+
+// ─────────────────────────────────────
+// LOGIN / AUTH
+// ─────────────────────────────────────
+let loginAttempts = 0;
+let lockedUntil = 0;
+
+function openLogin() {
+  if (sessionStorage.getItem('dmj_session') === 'ok') {
+    openAdminPanel();
+    return;
+  }
+  document.getElementById('loginModal').classList.add('open');
+  document.getElementById('loginInput').value = '';
+  document.getElementById('loginError').classList.remove('show');
+  setTimeout(() => document.getElementById('loginInput').focus(), 100);
+}
+
+function closeLogin() {
+  document.getElementById('loginModal').classList.remove('open');
+}
+
+async function attemptLogin() {
+  const now = Date.now();
+  if (now < lockedUntil) return;
+
+  const input = document.getElementById('loginInput').value;
+  if (!input) return;
+
+  const inputHash = await hashPassword(input);
+  const storedHash = await getStoredHash();
+
+  if (inputHash === storedHash) {
+    loginAttempts = 0;
+    sessionStorage.setItem('dmj_session', 'ok');
+    closeLogin();
+    openAdminPanel();
+  } else {
+    loginAttempts++;
+    document.getElementById('loginInput').value = '';
+    document.getElementById('loginError').classList.add('show');
+    
+    if (loginAttempts >= 5) {
+      lockedUntil = Date.now() + 30000;
+      loginAttempts = 0;
+      document.getElementById('lockoutMsg').classList.add('show');
+      document.getElementById('loginError').classList.remove('show');
+      let t = 30;
+      const ti = setInterval(() => {
+        document.getElementById('lockoutTimer').textContent = --t;
+        if (t <= 0) {
+          clearInterval(ti);
+          document.getElementById('lockoutMsg').classList.remove('show');
+        }
+      }, 1000);
+    }
+    // Shake animation
+    const box = document.querySelector('.modal-box');
+    box.style.animation = 'none';
+    box.offsetHeight;
+    box.style.animation = 'shake 0.4s ease';
+  }
+}
+
+async function changePassword() {
+  const current = document.getElementById('pwCurrent').value;
+  const newPw = document.getElementById('pwNew').value;
+  const confirm = document.getElementById('pwConfirm').value;
+  const errEl = document.getElementById('pwError');
+
+  const currentHash = await hashPassword(current);
+  const storedHash = await getStoredHash();
+
+  if (currentHash !== storedHash) {
+    errEl.textContent = 'La contraseña actual es incorrecta.';
+    errEl.style.display = 'block'; return;
+  }
+  if (newPw.length < 8) {
+    errEl.textContent = 'La nueva contraseña debe tener al menos 8 caracteres.';
+    errEl.style.display = 'block'; return;
+  }
+  if (newPw !== confirm) {
+    errEl.textContent = 'Las contraseñas no coinciden.';
+    errEl.style.display = 'block'; return;
+  }
+
+  const newHash = await hashPassword(newPw);
+  localStorage.setItem('dmj_auth_hash', newHash);
+  errEl.style.display = 'none';
+  document.getElementById('pwCurrent').value = '';
+  document.getElementById('pwNew').value = '';
+  document.getElementById('pwConfirm').value = '';
+  showToast('Contraseña actualizada');
+}
+
+// ─────────────────────────────────────
+// ADMIN PANEL
+// ─────────────────────────────────────
+function openAdminPanel() {
+  document.getElementById('adminPanel').classList.add('open');
+  loadEditorValues();
+}
+
+function adminLogout() {
+  sessionStorage.removeItem('dmj_session');
+  document.getElementById('adminPanel').classList.remove('open');
+}
+
+function showTab(tabId, el) {
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  el.classList.add('active');
+}
+
+function toggleSwitch(el) {
+  el.classList.toggle('on');
+  const key = el.id.replace('toggle-', '');
+  applyToggle(key, el.classList.contains('on'));
+}
+
+function applyToggle(key, val) {
+  if (key === 'grain') {
+    document.body.style.setProperty('--grain', val ? '0.4' : '0');
+  }
+  if (key === 'cursor') {
+    document.getElementById('cursor').style.display = val ? '' : 'none';
+    document.getElementById('cursorRing').style.display = val ? '' : 'none';
+  }
+}
+
+// ─────────────────────────────────────
+// DATA & CONTENT
+// ─────────────────────────────────────
+const defaultData = {
+  heroLabel: 'Nueva Colección 2025',
+  heroLine1: 'Moda que',
+  heroLine2: 'define quién eres',
+  heroSubtitle: 'Prendas diseñadas con precisión, confeccionadas con materiales seleccionados y creadas para quienes definen su propio estilo.',
+  heroCta1: 'Ver Colección',
+  heroCta2: 'Conocer la marca',
+  marquee: 'Moda Colombiana · Fashion Studio · Nueva Colección · Diseño Exclusivo · Hecho en Colombia · DIMAJU 2025',
+  aboutTitle1: 'Una marca',
+  aboutTitle2: 'con identidad',
+  aboutP1: 'DIMAJU nació de la convicción de que la moda colombiana merece un lugar propio en el escenario global. Cada pieza que creamos es el resultado de un proceso riguroso de diseño, selección de materiales y confección artesanal.',
+  aboutP2: 'Nuestro estudio trabaja con un enfoque editorial: cada colección cuenta una historia, cada prenda es un capítulo. Creamos moda para personas que entienden que vestirse bien es una forma de comunicación.',
+  stat1N: '100%', stat1L: 'Diseño propio',
+  stat2N: '2025', stat2L: 'Fundada',
+  stat3N: 'Col.', stat3L: 'Hecho en Colombia',
+  stat4N: '∞', stat4L: 'Estilo propio',
+  colTitle: 'Piezas', colItalic: 'esenciales',
+  colSub: 'Selección exclusiva · Temporada 2025',
+  editLabel: '03 — Editorial',
+  editTitle1: 'La moda como', editTitle2: 'declaración',
+  editText: 'En DIMAJU creemos que cada prenda es una declaración silenciosa. Nuestro proceso creativo parte de la observación del entorno colombiano — sus colores, texturas, ritmos — y los transforma en piezas que hablan por sí solas.',
+  editCta: 'Explorar colección',
+  contactTitle1: 'Hablemos de', contactTitle2: 'tu estilo',
+  contactEmail: 'hola@dimaju.com',
+  contactIG: '@dimaju.studio',
+  contactCity: 'Colombia',
+  contactHours: 'Lun–Vie · 9am–6pm',
+  footerTagline: 'Fashion Studio',
+  footerCopy: '© 2025 DIMAJU. Todos los derechos reservados.',
+  products: [
+    { name: 'Vestido Noir', cat: 'Vestidos', price: '$320.000', badge: 'Nuevo', emoji: 'D' },
+    { name: 'Blazer Dorado', cat: 'Blazers', price: '$480.000', badge: 'Exclusivo', emoji: 'D' },
+    { name: 'Pantalón Studio', cat: 'Pantalones', price: '$260.000', badge: '', emoji: 'D' },
+    { name: 'Blusa Editorial', cat: 'Blusas', price: '$195.000', badge: 'Nuevo', emoji: 'D' },
+    { name: 'Falda Asimétrica', cat: 'Faldas', price: '$280.000', badge: '', emoji: 'D' },
+    { name: 'Set Minimal', cat: 'Conjuntos', price: '$580.000', badge: 'Especial', emoji: 'D' }
+  ]
+};
+
+function getData() {
+  try {
+    const raw = localStorage.getItem('dmj_data');
+    return raw ? JSON.parse(raw) : { ...defaultData };
+  } catch(e) { return { ...defaultData }; }
+}
+
+function setData(d) {
+  localStorage.setItem('dmj_data', JSON.stringify(d));
+}
+
+// Apply data to page
+function applyData(d) {
+  const s = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val || ''; };
+  const sh = (id, val) => { const el = document.getElementById(id); if (el) el.innerHTML = val || ''; };
+
+  s('heroLabel', d.heroLabel);
+  sh('heroTitle', d.heroLine1 + '<br><em id="heroTitleItalic">' + (d.heroLine2||'') + '</em>');
+  s('heroSubtitle', d.heroSubtitle);
+  s('heroCta1', d.heroCta1);
+  s('heroCta2', d.heroCta2);
+  s('aboutTitle', '');
+  const at = document.getElementById('aboutTitle');
+  if (at) at.innerHTML = (d.aboutTitle1||'') + '<br><em>' + (d.aboutTitle2||'') + '</em>';
+  s('aboutP1', d.aboutP1); s('aboutP2', d.aboutP2);
+  s('stat1N', d.stat1N); s('stat1L', d.stat1L);
+  s('stat2N', d.stat2N); s('stat2L', d.stat2L);
+  s('stat3N', d.stat3N); s('stat3L', d.stat3L);
+  s('stat4N', d.stat4N); s('stat4L', d.stat4L);
+  
+  const ct = document.getElementById('colTitle');
+  if (ct) ct.innerHTML = (d.colTitle||'') + ' <em>' + (d.colItalic||'') + '</em>';
+  s('colSubtitle', d.colSub);
+  
+  s('editLabel', d.editLabel);
+  const etEl = document.getElementById('editTitle');
+  if (etEl) etEl.innerHTML = (d.editTitle1||'') + '<br><em>' + (d.editTitle2||'') + '</em>';
+  s('editText', d.editText); s('editCta', d.editCta);
+  
+  const ctt = document.getElementById('contactTitle');
+  if (ctt) ctt.innerHTML = (d.contactTitle1||'') + ' <em>' + (d.contactTitle2||'') + '</em>';
+  s('contactEmail', d.contactEmail); s('contactIG', d.contactIG);
+  s('contactCity', d.contactCity); s('contactHours', d.contactHours);
+  s('footerTagline', d.footerTagline); s('footerCopy', d.footerCopy);
+
+  // Marquee
+  if (d.marquee) {
+    const items = d.marquee.split('·').map(i => i.trim()).filter(Boolean);
+    const inner = document.getElementById('marqueeInner');
+    if (inner) {
+      const repeated = [...items, ...items]; // double for loop
+      inner.innerHTML = repeated.map(t => `<span class="marquee-item">${t}</span>`).join('');
+    }
+  }
+
+  // Products
+  renderProducts(d.products || []);
+}
+
+function renderProducts(products) {
+  const grid = document.getElementById('collectionGrid');
+  if (!grid) return;
+  grid.innerHTML = products.map((p, i) => `
+    <div class="product-card">
+      <div class="product-visual">${p.emoji || 'D'}</div>
+      <div class="product-overlay"></div>
+      ${p.badge ? `<div class="product-badge">${p.badge}</div>` : ''}
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-cat">${p.cat}</div>
+        <div class="product-price">${p.price}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Load values into editor
+function loadEditorValues() {
+  const d = getData();
+  const fields = ['heroLabel','heroLine1','heroLine2','heroSubtitle','heroCta1','heroCta2','marquee',
+    'aboutTitle1','aboutTitle2','aboutP1','aboutP2','stat1N','stat1L','stat2N','stat2L','stat3N','stat3L','stat4N','stat4L',
+    'colTitle','colItalic','colSub','editLabel','editTitle1','editTitle2','editText','editCta',
+    'contactTitle1','contactTitle2','contactEmail','contactIG','contactCity','contactHours','footerTagline','footerCopy'];
+  
+  fields.forEach(f => {
+    const el = document.getElementById('e-' + f);
+    if (el) el.value = d[f] || '';
+  });
+
+  // Products editor
+  renderProductsEditor(d.products || []);
+}
+
+function renderProductsEditor(products) {
+  const cont = document.getElementById('productsEditor');
+  if (!cont) return;
+  cont.innerHTML = products.map((p, i) => `
+    <div class="product-editor-card" id="peditor-${i}">
+      <div class="card-num">Producto ${i + 1}</div>
+      <button class="delete-card" onclick="deleteProduct(${i})" title="Eliminar">✕</button>
+      <div class="admin-grid-3">
+        <div class="admin-field-group">
+          <div class="admin-label">Nombre</div>
+          <input class="admin-input" data-pi="${i}" data-pf="name" value="${p.name || ''}">
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Categoría</div>
+          <input class="admin-input" data-pi="${i}" data-pf="cat" value="${p.cat || ''}">
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Precio</div>
+          <input class="admin-input" data-pi="${i}" data-pf="price" value="${p.price || ''}">
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Badge (opcional)</div>
+          <input class="admin-input" data-pi="${i}" data-pf="badge" value="${p.badge || ''}">
+        </div>
+        <div class="admin-field-group">
+          <div class="admin-label">Ícono / Letra</div>
+          <input class="admin-input" data-pi="${i}" data-pf="emoji" value="${p.emoji || 'D'}">
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addProduct() {
+  const d = getData();
+  d.products = d.products || [];
+  d.products.push({ name: 'Nueva Prenda', cat: 'Categoría', price: '$0', badge: '', emoji: 'D' });
+  setData(d);
+  renderProductsEditor(d.products);
+}
+
+function deleteProduct(i) {
+  const d = getData();
+  d.products.splice(i, 1);
+  setData(d);
+  renderProductsEditor(d.products);
+  applyData(d);
+}
+
+function collectProductsFromEditor() {
+  const cards = document.querySelectorAll('#productsEditor [data-pi]');
+  const products = [];
+  const seen = new Set();
+  cards.forEach(el => {
+    const i = parseInt(el.dataset.pi);
+    if (!seen.has(i)) { seen.add(i); products[i] = products[i] || {}; }
+    products[i][el.dataset.pf] = el.value;
+  });
+  return products.filter(Boolean);
+}
+
+function saveAllChanges() {
+  const d = getData();
+  const fields = ['heroLabel','heroLine1','heroLine2','heroSubtitle','heroCta1','heroCta2','marquee',
+    'aboutTitle1','aboutTitle2','aboutP1','aboutP2','stat1N','stat1L','stat2N','stat2L','stat3N','stat3L','stat4N','stat4L',
+    'colTitle','colItalic','colSub','editLabel','editTitle1','editTitle2','editText','editCta',
+    'contactTitle1','contactTitle2','contactEmail','contactIG','contactCity','contactHours','footerTagline','footerCopy'];
+
+  fields.forEach(f => {
+    const el = document.getElementById('e-' + f);
+    if (el) d[f] = el.value;
+  });
+
+  d.products = collectProductsFromEditor();
+  setData(d);
+  applyData(d);
+  showToast('Cambios guardados ✓');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('saveToast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ─────────────────────────────────────
+// CURSOR
+// ─────────────────────────────────────
+const cursorEl = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursorRing');
+let mouseX = 0, mouseY = 0;
+let ringX = 0, ringY = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  cursorEl.style.left = mouseX + 'px';
+  cursorEl.style.top = mouseY + 'px';
+});
+
+function animateCursor() {
+  ringX += (mouseX - ringX) * 0.12;
+  ringY += (mouseY - ringY) * 0.12;
+  cursorRing.style.left = ringX + 'px';
+  cursorRing.style.top = ringY + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+document.querySelectorAll('a, button, .product-card, .sidebar-item').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursorEl.classList.add('hover'); cursorRing.classList.add('hover'); });
+  el.addEventListener('mouseleave', () => { cursorEl.classList.remove('hover'); cursorRing.classList.remove('hover'); });
+});
+
+// ─────────────────────────────────────
+// NAVBAR SCROLL
+// ─────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ─────────────────────────────────────
+// LOADER
+// ─────────────────────────────────────
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hide');
+  }, 2200);
+});
+
+// ─────────────────────────────────────
+// MENU MOBILE
+// ─────────────────────────────────────
+function toggleMenu() {
+  const links = document.getElementById('navLinks');
+  const open = links.style.display === 'flex';
+  links.style.display = open ? 'none' : 'flex';
+  links.style.flexDirection = 'column';
+  links.style.position = 'fixed';
+  links.style.top = '70px';
+  links.style.left = '0';
+  links.style.right = '0';
+  links.style.background = 'rgba(10,10,10,0.98)';
+  links.style.padding = '40px';
+  links.style.gap = '32px';
+  links.style.backdropFilter = 'blur(12px)';
+  links.style.zIndex = '999';
+}
+
+// ─────────────────────────────────────
+// CONTACT FORM
+// ─────────────────────────────────────
+function handleContactForm(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button');
+  btn.textContent = '¡Mensaje enviado!';
+  btn.style.background = '#2a6b3c';
+  btn.style.color = '#fff';
+  setTimeout(() => {
+    btn.textContent = 'Enviar mensaje';
+    btn.style.background = '';
+    btn.style.color = '';
+    e.target.reset();
+  }, 3000);
+}
+
+// ─────────────────────────────────────
+// SHAKE ANIMATION
+// ─────────────────────────────────────
+const shakeStyle = document.createElement('style');
+shakeStyle.textContent = `
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-6px); }
+    80% { transform: translateX(6px); }
+  }
+`;
+document.head.appendChild(shakeStyle);
+
+// ─────────────────────────────────────
+// INIT
+// ─────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const d = getData();
+  applyData(d);
+  
+  // Close login on overlay click
+  document.getElementById('loginModal').addEventListener('click', function(e) {
+    if (e.target === this) closeLogin();
+  });
+});
+</script>
+
+</body>
+</html>
